@@ -1,0 +1,14 @@
+Required images for the projects section:
+
+1. ecommerce.jpg - Modern e-commerce platform interface
+2. corporate-video.jpg - Corporate office environment or business meeting
+3. marketing.jpg - Digital marketing campaign visualization
+4. banking.jpg - Mobile banking app interface on smartphone
+5. product-video.jpg - Professional product photography setup
+6. seo.jpg - SEO analytics dashboard or visualization
+
+Image specifications:
+- Minimum resolution: 1200x800 pixels
+- Format: JPG
+- Aspect ratio: 3:2
+- Style: Modern, professional, high-quality

@@ -1,0 +1,15 @@
+Required videos for the projects section:
+
+1. ecommerce.mp4 - Screen recording of e-commerce platform features
+2. corporate.mp4 - Corporate brand video highlights
+3. marketing.mp4 - Digital marketing campaign results animation
+4. banking.mp4 - Mobile banking app interaction demo
+5. product.mp4 - Product showcase video highlights
+6. seo.mp4 - SEO performance metrics animation
+
+Video specifications:
+- Resolution: 1920x1080 (Full HD)
+- Format: MP4
+- Duration: 10-15 seconds each
+- Codec: H.264
+- Style: Professional, smooth transitions, high quality
