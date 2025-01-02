@@ -8,7 +8,6 @@ import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -21,7 +20,6 @@ const Navbar = () => {
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
     { href: '/services', label: 'Services' },
     { href: '/projects', label: 'Projects' },
     { href: '/contact', label: 'Contact' },
@@ -34,169 +32,167 @@ const Navbar = () => {
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'bg-white/5 dark:bg-[#0B1120]/40 backdrop-blur-sm shadow-lg dark:shadow-purple-500/5' 
+          ? 'bg-[#0B1120]/80 backdrop-blur-md' 
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
+          <Link href="/" className="flex items-center space-x-4 group">
             <motion.div 
-              className="relative w-12 h-12"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="flex items-center"
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <Image 
-                src="/logo.svg" 
-                alt="Nova Digital" 
-                width={48} 
-                height={48} 
-                className="object-contain" 
-              />
-            </motion.div>
-            <div className="flex flex-col">
-              <motion.span 
-                className="text-xl font-bold text-gray-900 dark:text-white"
-                whileHover={{ scale: 1.02 }}
+              <motion.div
+                className="relative"
+                initial={{ rotate: 0 }}
+                animate={{ 
+                  rotate: [0, 5, -5, 5, 0],
+                  scale: [1, 1.02, 0.98, 1.02, 1]
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  ease: "easeInOut"
+                }}
               >
-                NOVA DIGITAL
-              </motion.span>
-              <span className="text-sm bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                services agency
-              </span>
-            </div>
+                <div className="absolute -inset-2 bg-gradient-to-r from-purple-600/20 via-blue-500/20 to-pink-500/20 rounded-full blur-lg group-hover:blur-xl transition-all duration-300" />
+                <motion.div
+                  whileHover={{ 
+                    rotate: [0, -15, 15, -10, 10, -5, 5, 0],
+                    transition: { duration: 0.8 }
+                  }}
+                >
+                  <Image 
+                    src="/logo.svg" 
+                    alt="Nova Digital" 
+                    width={40} 
+                    height={40} 
+                    className="object-contain relative z-10 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" 
+                  />
+                </motion.div>
+              </motion.div>
+              <div className="flex flex-col ml-3">
+                <span className="text-xl font-semibold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                  NOVA DIGITAL
+                </span>
+                <span className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                  services agency
+                </span>
+              </div>
+            </motion.div>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <Link
+              <motion.div
                 key={link.label}
-                href={link.href}
-                className="relative group"
+                className="relative"
+                whileHover={{ y: -2 }}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 300, 
+                  damping: 15 
+                }}
               >
-                <motion.span
-                  className={`text-sm font-medium transition-colors duration-300 ${
-                    pathname === link.href
-                      ? 'text-purple-500 dark:text-purple-400'
-                      : 'text-gray-700 dark:text-gray-300 group-hover:text-purple-500 dark:group-hover:text-purple-400'
-                  }`}
-                  whileHover={{ y: -2 }}
+                <Link
+                  href={link.href}
+                  className="relative group px-3 py-2"
                 >
-                  {link.label}
-                </motion.span>
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transform scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-              </Link>
+                  <span className={`text-sm font-medium transition-all duration-300 ease-out ${
+                    pathname === link.href
+                      ? 'text-white'
+                      : 'text-gray-300 group-hover:text-white'
+                  }`}>
+                    {link.label}
+                  </span>
+                  
+                  {/* Gradient underline effect */}
+                  <div className="absolute -bottom-0.5 left-0 right-0 h-[2px] overflow-hidden">
+                    <div className={`h-full bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 transition-all duration-300 ease-out ${
+                      pathname === link.href 
+                        ? 'w-full' 
+                        : 'w-0 group-hover:w-full'
+                    }`} 
+                    style={{
+                      backgroundSize: '200% 100%',
+                      animation: 'gradientMove 2s linear infinite'
+                    }}
+                    />
+                  </div>
+
+                  {/* Subtle glow on hover */}
+                  <div className={`absolute inset-0 rounded-lg bg-purple-400/0 transition-all duration-300 ease-out ${
+                    pathname === link.href
+                      ? 'bg-purple-400/5'
+                      : 'group-hover:bg-purple-400/5'
+                  }`} />
+                </Link>
+              </motion.div>
             ))}
           </div>
 
-          {/* Auth Buttons & Theme Toggle */}
+          {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <ThemeToggle />
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ 
+                scale: 1.05,
+                color: "#fff",
+                transition: { duration: 0.2 }
+              }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-500 dark:hover:text-purple-400 transition-colors duration-300"
+              className="px-4 py-2 text-sm text-gray-300 hover:text-white transition-all duration-300 relative overflow-hidden group"
             >
-              Login
+              <span className="relative z-10">Login</span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                whileHover={{ scale: 1.1 }}
+              />
             </motion.button>
             <motion.button
               whileHover={{ 
                 scale: 1.05,
-                boxShadow: "0 0 20px rgba(168, 85, 247, 0.4)"
+                boxShadow: "0 0 20px rgba(168, 85, 247, 0.4)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg transition-all duration-300 hover:opacity-90"
+              className="px-4 py-2 text-sm text-white bg-gradient-to-r from-purple-400 to-pink-400 rounded-full transition-all duration-300 hover:opacity-90 relative overflow-hidden"
             >
-              Get Started
+              <span className="relative z-10">Sign Up</span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                whileHover={{ scale: 1.2 }}
+              />
             </motion.button>
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 180 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <ThemeToggle />
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-4">
-            <ThemeToggle />
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-700 dark:text-gray-300 hover:text-purple-500 dark:hover:text-purple-400 transition-colors duration-300"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isMobileMenuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
-            </motion.button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="md:hidden bg-white/10 dark:bg-[#0B1120]/95 backdrop-blur-lg rounded-b-2xl shadow-lg"
+          <motion.button 
+            className="md:hidden text-gray-300 hover:text-white"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <div className="px-4 pt-2 pb-3 space-y-1">
-              {navLinks.map((link) => (
-                <motion.div
-                  key={link.label}
-                  whileHover={{ x: 10 }}
-                  className="block"
-                >
-                  <Link
-                    href={link.href}
-                    className={`block px-3 py-2 text-base font-medium rounded-lg transition-all duration-300 ${
-                      pathname === link.href
-                        ? 'text-purple-500 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20'
-                        : 'text-gray-700 dark:text-gray-300 hover:text-purple-500 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-              <div className="mt-4 px-3 space-y-2">
-                <motion.button
-                  whileHover={{ x: 10 }}
-                  className="w-full px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-purple-500 dark:hover:text-purple-400 transition-colors duration-300 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20"
-                >
-                  Login
-                </motion.button>
-                <motion.button
-                  whileHover={{ 
-                    x: 10,
-                    boxShadow: "0 0 20px rgba(168, 85, 247, 0.4)"
-                  }}
-                  className="w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg transition-all duration-300 hover:opacity-90"
-                >
-                  Get Started
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
-        )}
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </motion.button>
+        </div>
       </div>
+      <style jsx global>{`
+        @keyframes gradientMove {
+          0% { background-position: 0% 0%; }
+          100% { background-position: 200% 0%; }
+        }
+      `}</style>
     </motion.nav>
   );
 };

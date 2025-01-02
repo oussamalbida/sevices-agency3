@@ -1,8 +1,14 @@
+'use client';
 import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useAnimation } from 'framer-motion';
 
 const WhyChooseUs = () => {
   const containerRef = useRef(null);
+  const controls = useAnimation();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
 
   const features = [
     {
@@ -41,104 +47,329 @@ const WhyChooseUs = () => {
     { value: "10+", label: "Years Experience" }
   ];
 
+  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
+  const y = useSpring(useTransform(scrollYProgress, [0, 1], [100, -100]), springConfig);
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]), springConfig);
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 100,
+      rotateX: -45,
+      scale: 0.8
+    },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        damping: 8,
+        stiffness: 70,
+        delay: i * 0.2,
+        duration: 0.8,
+        ease: [0.25, 0.25, 0, 1]
+      }
+    }),
+    hover: {
+      scale: 1.05,
+      y: -15,
+      rotateY: 5,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
+      }
+    }
+  };
+
+  const statVariants = {
+    hidden: { 
+      scale: 0,
+      opacity: 0,
+      rotate: -180
+    },
+    visible: (i) => ({
+      scale: 1,
+      opacity: 1,
+      rotate: 0,
+      transition: {
+        type: "spring",
+        stiffness: 150,
+        damping: 12,
+        delay: i * 0.15,
+        duration: 0.8
+      }
+    }),
+    hover: {
+      scale: 1.1,
+      rotate: 5,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
+      }
+    }
+  };
+
   return (
-    <section className="py-20 relative overflow-hidden bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm">
+    <motion.section 
+      ref={containerRef}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1 }}
+      className="py-20 relative overflow-hidden bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm"
+    >
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-50/30 to-white/30 dark:from-gray-900/30 dark:to-gray-800/30 backdrop-blur-xl"></div>
+      <motion.div 
+        className="absolute inset-0 bg-gradient-to-b from-gray-50/30 to-white/30 dark:from-gray-900/30 dark:to-gray-800/30 backdrop-blur-xl"
+        animate={{ 
+          scale: [1, 1.1, 1],
+          rotate: [0, 5, 0]
+        }}
+        transition={{ 
+          duration: 20,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+      ></motion.div>
       
       {/* Animated Background Patterns */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-full filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-        
-        {/* Geometric Shapes */}
-        <div className="absolute top-1/4 left-1/4 w-4 h-4 border-2 border-purple-500 rotate-45 animate-float-square"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-6 h-6 border-2 border-cyan-500 rounded-full animate-float"></div>
-        <div className="absolute top-1/2 right-1/3 w-8 h-8 border-2 border-pink-500 rotate-45 animate-float-triangle"></div>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div 
+          animate={{ 
+            rotate: [0, 360],
+            scale: [1, 1.5, 1],
+            x: [0, 100, 0],
+            y: [0, -100, 0]
+          }}
+          transition={{ 
+            duration: 30,
+            repeat: Infinity,
+            ease: "linear" 
+          }}
+          className="absolute top-0 left-0 w-[600px] h-[600px] bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full filter blur-3xl opacity-30"
+        ></motion.div>
+        <motion.div 
+          animate={{ 
+            rotate: [360, 0],
+            scale: [1, 1.8, 1],
+            x: [0, -100, 0],
+            y: [0, 100, 0]
+          }}
+          transition={{ 
+            duration: 25,
+            repeat: Infinity,
+            ease: "linear" 
+          }}
+          className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-full filter blur-3xl opacity-30"
+        ></motion.div>
       </div>
 
       <div className="container mx-auto px-4 relative">
         {/* Section Header */}
-        <div className="max-w-3xl mx-auto text-center mb-16 slide-in-left">
+        <motion.div 
+          initial={{ opacity: 0, y: 100, scale: 0.5 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ 
+            type: "spring",
+            stiffness: 50,
+            damping: 8,
+            duration: 1 
+          }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto text-center mb-16"
+        >
           <motion.span 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 200,
+              damping: 10,
+              delay: 0.2
+            }}
             className="text-sm font-bold tracking-wider text-indigo-500 uppercase mb-4 block"
           >
             Why Choose Us
           </motion.span>
           <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 50,
+              damping: 8,
+              delay: 0.4
+            }}
             className="text-4xl md:text-5xl font-bold mb-6"
           >
             Elevate Your Digital Presence with{' '}
-            <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <motion.span 
+              className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent inline-block"
+              whileHover={{ 
+                scale: 1.1,
+                rotate: [0, 5, -5, 0],
+                transition: {
+                  duration: 0.5,
+                  type: "spring",
+                  stiffness: 300
+                }
+              }}
+            >
               Our Expertise
-            </span>
+            </motion.span>
           </motion.h2>
           <motion.p 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 50,
+              damping: 8,
+              delay: 0.6
+            }}
             className="text-gray-600 dark:text-gray-300 text-lg"
           >
             We combine creativity, technical expertise, and strategic thinking to deliver exceptional results that help your business grow.
           </motion.p>
-        </div>
+        </motion.div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 stagger-children">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
+              custom={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              whileHover="hover"
+              viewport={{ once: true }}
               className="relative group"
             >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-              <div className="relative bg-white/30 dark:bg-gray-900/30 p-6 rounded-xl border-t border-l border-gray-200/20 backdrop-blur-sm">
-                <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white mb-6 transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+              <motion.div 
+                className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl blur opacity-30"
+                whileHover={{ 
+                  opacity: 1,
+                  scale: 1.1,
+                  rotate: [0, 5, -5, 0],
+                }}
+                transition={{ duration: 0.3 }}
+              ></motion.div>
+              <motion.div 
+                className="relative bg-white/30 dark:bg-gray-900/30 p-6 rounded-xl border-t border-l border-gray-200/20 backdrop-blur-sm"
+                whileHover={{
+                  y: -5,
+                  transition: { type: "spring", stiffness: 300 }
+                }}
+              >
+                <motion.div 
+                  className="w-16 h-16 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white mb-6"
+                  whileHover={{ 
+                    rotate: 360,
+                    scale: 1.2,
+                    transition: {
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 10
+                    }
+                  }}
+                >
                   {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                </motion.div>
+                <motion.h3 
+                  className="text-xl font-bold mb-4 bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent"
+                  whileHover={{ 
+                    x: 10,
+                    transition: {
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 10
+                    }
+                  }}
+                >
                   {feature.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300">
+                </motion.h3>
+                <motion.p 
+                  className="text-gray-600 dark:text-gray-300"
+                  whileHover={{ scale: 1.02 }}
+                >
                   {feature.description}
-                </p>
-              </div>
+                </motion.p>
+              </motion.div>
             </motion.div>
           ))}
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 grid-animate">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              custom={index}
+              variants={statVariants}
+              initial="hidden"
+              whileInView="visible"
+              whileHover="hover"
+              viewport={{ once: true }}
               className="text-center"
             >
-              <div className="relative mb-2">
-                <span className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              <motion.div 
+                className="relative mb-2"
+                whileHover={{
+                  y: -10,
+                  transition: {
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 10
+                  }
+                }}
+              >
+                <motion.span 
+                  className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent inline-block"
+                  initial={{ scale: 0, rotate: -180 }}
+                  whileInView={{ 
+                    scale: 1,
+                    rotate: 0,
+                    transition: {
+                      type: "spring",
+                      stiffness: 100,
+                      damping: 10,
+                      delay: index * 0.1
+                    }
+                  }}
+                >
                   {stat.value}
-                </span>
-                <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-pink-500 animate-ping"></div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 font-medium">
+                </motion.span>
+                <motion.div 
+                  className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-pink-500"
+                  animate={{ 
+                    scale: [1, 2, 1],
+                    opacity: [1, 0.5, 1],
+                    rotate: [0, 180, 360]
+                  }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut" 
+                  }}
+                ></motion.div>
+              </motion.div>
+              <motion.p 
+                className="text-gray-600 dark:text-gray-300 font-medium"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+              >
                 {stat.label}
-              </p>
+              </motion.p>
             </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

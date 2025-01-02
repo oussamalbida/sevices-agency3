@@ -16,7 +16,7 @@ export default function Scene3D() {
           className="relative w-[850px] h-[850px]" 
           style={{ 
             marginRight: '-50px', 
-            marginLeft: '-350px',
+            marginLeft: '-500px',
             marginTop: '50px'
           }}
         >
