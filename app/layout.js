@@ -1,46 +1,57 @@
-import { Inter, Syne } from "next/font/google";
-import "./globals.css";
-import Script from 'next/script';
+import { Inter, Syne } from 'next/font/google';
+import './globals.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Stars from './components/Stars';
+import { Providers } from './providers';
+import Script from 'next/script';
+import ClientLayout from './components/ClientLayout';
+import CustomCursor from './components/CustomCursor';
+import WhatsAppButton from './components/WhatsAppButton';
 
 const inter = Inter({
   subsets: ["latin"],
-  display: "swap",
   variable: "--font-inter",
 });
 
 const syne = Syne({
   subsets: ["latin"],
-  display: "swap",
   variable: "--font-syne",
 });
 
 export const metadata = {
-  title: "NOVA AGENCY | Creative Digital Agency",
-  description: "NOVA AGENCY is a creative digital agency delivering innovative solutions for modern businesses.",
+  title: 'Agency Website',
+  description: 'Modern Agency Website',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${syne.variable}`}>
       <head>
-        <Script id="dark-mode-script" strategy="afterInteractive">
-          {`
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-              document.documentElement.classList.add('dark')
-            } else {
-              document.documentElement.classList.remove('dark')
-            }
-          `}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"
+        />
+        <Script id="google-analytics">
+          {`window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-XXXXXXXX');`}
         </Script>
       </head>
       <body className="bg-[#0B1120] min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+        <ClientLayout>
+          <Stars />
+          <CustomCursor />
+          <Navbar />
+          <main className="flex-grow">
+            <Providers>
+              {children}
+            </Providers>
+          </main>
+          <Footer />
+          <WhatsAppButton />
+        </ClientLayout>
       </body>
     </html>
   );

@@ -37,11 +37,11 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   font-family: var(--font-inter);
-  cursor: default;
+  cursor: none;
 }
 
 a, button {
-  cursor: pointer;
+  cursor: none;
 }
 
 /* Container */
@@ -1814,4 +1814,118 @@ a, button, input, select, textarea {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Space-themed cursor */
+.custom-cursor {
+  width: 24px;
+  height: 24px;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+}
+
+.custom-cursor::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 2px;
+  background: linear-gradient(45deg, #6366f1, #8b5cf6, #d946ef);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotateGradient 4s linear infinite;
+}
+
+.custom-cursor::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  background: radial-gradient(circle at center, 
+    rgba(255, 255, 255, 0.9),
+    rgba(139, 92, 246, 0.4) 40%,
+    transparent 60%
+  );
+  border-radius: 50%;
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.custom-cursor.hover {
+  width: 40px;
+  height: 40px;
+}
+
+.custom-cursor.hover::before {
+  animation: rotateGradient 2s linear infinite;
+}
+
+.custom-cursor.hover::after {
+  inset: 10px;
+  animation: pulseGlow 1s ease-in-out infinite;
+}
+
+.cursor-trail {
+  width: 4px;
+  height: 4px;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.cursor-trail::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: white;
+  border-radius: 50%;
+  animation: trailGlow 1s ease-out forwards;
+}
+
+@keyframes rotateGradient {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes trailGlow {
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+    box-shadow: 
+      0 0 4px #6366f1,
+      0 0 8px #8b5cf6,
+      0 0 12px #d946ef;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+    box-shadow: 
+      0 0 2px #6366f1,
+      0 0 4px #8b5cf6,
+      0 0 6px #d946ef;
+  }
+}
+
+/* Hide default cursor */
+* {
+  cursor: none !important;
 }

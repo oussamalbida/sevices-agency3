@@ -46,14 +46,6 @@ const Logo = ({ className = '' }) => {
           />
         </g>
       </svg>
-      <div className="ml-2 flex flex-col">
-        <span className="text-2xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-          NOVA DIGITAL
-        </span>
-        <span className="text-sm text-gray-600 dark:text-gray-300">
-          services agency
-        </span>
-      </div>
     </div>
   );
 };

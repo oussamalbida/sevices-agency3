@@ -13,15 +13,16 @@ const Footer = () => {
       { label: 'Brand Identity', href: '/services#brand' },
     ],
     contact: [
-      { label: 'info@novaagency.com', href: 'mailto:info@novaagency.com' },
-      { label: '+1 (555) 123-4567', href: 'tel:+15551234567' },
+      { label: 'oussamalbida90@gmail.com', href: 'mailto:oussamalbida90@gmail.com' },
+      { label: '+212 659 417 658', href: 'tel:+212659417658' },
+      { label: 'Bani Mellal, Morocco', href: '#' },
     ],
     social: [
       { label: 'Twitter', href: 'https://twitter.com' },
       { label: 'LinkedIn', href: 'https://linkedin.com' },
       { label: 'Instagram', href: 'https://instagram.com' },
     ]
-  };
+  }/* ; */
 
   return (
     <footer className="relative overflow-hidden">
